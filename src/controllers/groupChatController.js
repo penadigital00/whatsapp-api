@@ -119,6 +119,50 @@ const getInviteCode = async (req, res) => {
 }
 
 /**
+ * Gets the invite code for a group chat
+ *
+ * @async
+ * @function
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Promise<Object>} Returns a JSON object with success flag and invite code
+ * @throws {Error} If chat is not a group
+ */
+const getContact = async (req, res) => {
+  try {
+    const { chatId } = req.body
+    const client = sessions.get(req.params.sessionId)
+    const chat = await client.getChatById(chatId)
+    if (!chat.isGroup) { throw new Error('The chat is not a group') }
+
+    const participants = chat.groupMetadata.participants;
+    let ids = []
+
+    participants.forEach(participant => {
+      ids.push(participant.id._serialized);
+    });
+
+    async function collectContacts(idsArray) {
+      let contacts = [];
+
+      for (const id of idsArray) {
+        const contact = await client.getContactById(id);
+        contacts.push(contact);
+      }
+
+      return contacts;
+    }
+
+    collectContacts(ids).then(contacts => {
+      res.json({ success: true,  contacts})
+    });
+  } catch (error) {
+    sendErrorResponse(res, 500, error.message)
+  }
+}
+
+
+/**
  * Sets the subject of a group chat
  *
  * @async
@@ -342,6 +386,7 @@ module.exports = {
   addParticipants,
   demoteParticipants,
   getInviteCode,
+  getContact,
   leave,
   promoteParticipants,
   removeParticipants,
