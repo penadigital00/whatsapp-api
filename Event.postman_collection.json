@@ -1,0 +1,2461 @@
+{
+	"info": {
+		"_postman_id": "8b0c6054-285a-4812-b1bd-af97b0613bd3",
+		"name": "Event",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22873595",
+		"_collection_link": "https://ufineteam.postman.co/workspace/Pena-Digital~7107000d-6a7c-4224-b7e9-eed22b0fa8f5/collection/22873595-8b0c6054-285a-4812-b1bd-af97b0613bd3?action=share&source=collection_link&creator=22873595"
+	},
+	"item": [
+		{
+			"name": "Internal",
+			"item": [
+				{
+					"name": "Participant",
+					"item": [
+						{
+							"name": "All Participant Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/participant",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participant"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Participants",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"partipant cek\",\r\n    \"email\" : \"partipant@gmail.com\",\r\n    \"phone\" : \"08598655847\",\r\n    \"address\" : \"jalan manggis no.10\",\r\n    \"additional_info\" : null,\r\n    \"participant_number\": 2,\r\n    \"registration_type\":2,\r\n    \"ticket_id\" :null,\r\n    \"event_id\":null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/participants",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Participant Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"partipant\",\r\n    \"email\" : \"partipant@gmail.com\",\r\n    \"phone\" : \"08598655847\",\r\n    \"address\" : \"jalan manggis no.10\",\r\n    \"additional_info\" : null,\r\n    \"participant_number\": 2,\r\n    \"registration_type\":2,\r\n    \"registration_id\":null,\r\n    \"ticket_id\" : null,\r\n    \"event_id\": null,\r\n    \"user_id\":1,\r\n    \"created_by\":1,\r\n    \"updated_by\":1,\r\n    \"deleted_by\":1,\r\n    \"registration_by\":1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/participants/5",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participants",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Participant Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/participants/5",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participants",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Participant Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/participants/4",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participants",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Participant Ticket",
+					"item": [
+						{
+							"name": "All Participant Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/participant",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participant"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Participants Ticket",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"event_id\": \"9c2c6116-0301-4868-b55d-52ffd1b4f64d\",\r\n    \"participant_id\": \"07571718-e243-4034-af1f-3d87f2a8d151\",\r\n    \"order_id\": \"51f489fc-b239-4e8f-b0a7-7ffb2248abae\",\r\n    \"ticket_id\": \"afdd9d3c-b5a9-4d0a-83da-301267c0b2f9\",\r\n    \"ticket_number\": \"002\",\r\n    \"is_scan\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/participantTickets",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participantTickets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Participant Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"partipant\",\r\n    \"email\" : \"partipant@gmail.com\",\r\n    \"phone\" : \"08598655847\",\r\n    \"address\" : \"jalan manggis no.10\",\r\n    \"additional_info\" : null,\r\n    \"participant_number\": 2,\r\n    \"registration_type\":2,\r\n    \"registration_id\":null,\r\n    \"ticket_id\" : null,\r\n    \"event_id\": null,\r\n    \"user_id\":1,\r\n    \"created_by\":1,\r\n    \"updated_by\":1,\r\n    \"deleted_by\":1,\r\n    \"registration_by\":1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/participants/5",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participants",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Participant Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/participants/5",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participants",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Participant Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/participants/4",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"participants",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Booker",
+					"item": [
+						{
+							"name": "All Booker Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/bookers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"bookers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Booker",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n    \"parent_id\":\"\",\r\n    \"public_link\":\"www.manman.com\",\r\n    \"description\":\"\",\r\n    \r\n\r\n    \"user\":{\r\n        \"name\":\"cek\",\r\n        \"username\":\"cek\",\r\n        \"email\":\"www.cek.com\",\r\n        \"password\":\"\"\r\n    }\r\n   \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/bookers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"bookers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creator Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"parent_id\":\"1\",\r\n    \"public_link\":\"www.cekBooker.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/bookers/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"bookers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Booker Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/bookers/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"bookers",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Booker Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/bookers/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"bookers",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Select Option",
+					"item": [
+						{
+							"name": "Get Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/internal/select-options/event-category",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"select-options",
+										"event-category"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Creators",
+					"item": [
+						{
+							"name": "All Creator Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/creators",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"creators"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Creator",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"parent_id\": \"\",\r\n    \"public_link\":\"www.creator\",\r\n    \"description\":\"nullable\",\r\n    \"user\":{\r\n        \"username\":\"luluk3\",\r\n        \"name\":\"luluk3\",\r\n        \"email\":\"luluk3@gmail.com\",\r\n        \"phone\":\"nomor WA\",\r\n        \"password\" : \"password\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/creators",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"creators"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creator Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"parent_id\":\"1\",\r\n    \"description\":\"cek update creator terbaru2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/creators/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"creators",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creator Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/creators/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"creators",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creator Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/creators/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"creators",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Ticket",
+					"item": [
+						{
+							"name": "Create Event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"name\":\"regular\",\n \"price\": 20000,\n \"qty\": 10,\n \"type\" : \"paid\"\n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/tickets/:event_id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"tickets",
+										":event_id"
+									],
+									"variable": [
+										{
+											"key": "event_id",
+											"value": "9bd3d0ca-dbc1-43bd-bb06-04822531ecf7"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"vip\",\n    \"qty\":20,\n    \"desc\": \"cek desc\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/tickets/a98d78ae-8ca8-4327-be6a-d233cdcada67",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"tickets",
+										"a98d78ae-8ca8-4327-be6a-d233cdcada67"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\" : \"hhelo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/tickets/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"tickets",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Event",
+					"item": [
+						{
+							"name": "Get All Event Data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/internal/events",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Event Data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/internal/events/9c18726b-6362-4e41-9b5f-aeefa28e5188",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"events",
+										"9c18726b-6362-4e41-9b5f-aeefa28e5188"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "jalan sehat",
+											"type": "text"
+										},
+										{
+											"key": "start_date",
+											"value": "2023-01-01",
+											"type": "text"
+										},
+										{
+											"key": "end_date",
+											"value": "2023-01-01",
+											"type": "text"
+										},
+										{
+											"key": "event_categories[0][category_id]",
+											"value": "9c2c6030-ce61-4393-b17f-568d94fc74d3",
+											"type": "text"
+										},
+										{
+											"key": "tickets[0][name]",
+											"value": "vip",
+											"type": "text"
+										},
+										{
+											"key": "tickets[0][price]",
+											"value": "20000",
+											"type": "text"
+										},
+										{
+											"key": "tickets[0][qty]",
+											"value": "20",
+											"type": "text"
+										},
+										{
+											"key": "tickets[0][type]",
+											"value": "paid",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "postman-cloud:///1ef13597-00b9-48c0-b26f-7e3b3d59eb2d"
+										},
+										{
+											"key": "tickets[1][name]",
+											"value": "regular",
+											"type": "text"
+										},
+										{
+											"key": "tickets[1][price]",
+											"value": "5000",
+											"type": "text"
+										},
+										{
+											"key": "tickets[1][qty]",
+											"value": "50",
+											"type": "text"
+										},
+										{
+											"key": "tickets[1][type]",
+											"value": "paid",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/events",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\" : \"hhelo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/events/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"events",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\" : \"hhelo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/events/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"events",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Get All User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/internal/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/internal/users/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\" : \"AzizMaulana\",\n    \"username\" : \"manman\",\n    \"email\" : \"am0111@gmail.com\",\n    \"password\" : \"pass\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\" : \"hhelo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/users/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\" : \"hhelo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/users/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var res = pm.response.json();",
+											"",
+											"pm.environment.set('token', res.payload.data.access_token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\" :\"superadmin\",\n    \"password\" : \"superadmin\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/auth",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"auth"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "Create Order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"tickets\" : [\n    {\n      \"ticket_id\": \"10b2648d-bdb9-46cc-9feb-922bc927ceb7\",\n      \"participants_data\":[\n        {\n        \"email\":\"amanda@gmail.com\",\n        \"name\":\"am\"\n      },\n      {\n        \"email\":\"adinda@gmail.com\",\n        \"name\":\"dinda\"\n      }\n      ]\n    },\n    {\n      \"ticket_id\": \"afdd9d3c-b5a9-4d0a-83da-301267c0b2f9\",\n      \"participants_data\":[{\n        \"email\":\"luluk@gmail.com\",\n        \"name\":\"luluk\"\n      }]\n    }\n  ],\n\n  \"booker_data\" : {\n    \"booker_id\": \"9c2c6185-707e-49d3-8f4b-d1a6a9ce4636\"\n    }\n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/orders/9c2c6116-0301-4868-b55d-52ffd1b4f64d",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"orders",
+										"9c2c6116-0301-4868-b55d-52ffd1b4f64d"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Invoice",
+					"item": [
+						{
+							"name": "delete invoice",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/invoices/9c19f5d3-7dff-4141-b488-46e4b7c8da9f",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"invoices",
+										"9c19f5d3-7dff-4141-b488-46e4b7c8da9f"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Invoice data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/invoices/9c28eaec-a983-44b1-ad6f-d2907e77bb3a",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"invoices",
+										"9c28eaec-a983-44b1-ad6f-d2907e77bb3a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Invoice data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/internal/invoices",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"invoices"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Get Invoice data Copy",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/internal/invoices",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"internal",
+												"invoices"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "html",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.17"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 30 May 2024 13:54:22 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/html; charset=UTF-8"
+										},
+										{
+											"key": "X-RateLimit-Limit",
+											"value": "60"
+										},
+										{
+											"key": "X-RateLimit-Remaining",
+											"value": "59"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\"rc\":\"SUCCESS\",\"message\":\"Success Retrieving All Data Invoice\",\"timestamp\":\"2024-05-30T13:54:22.671879Z\",\"payload\":{\"current_page\":1,\"data\":[],\"first_page_url\":\"http:\\/\\/127.0.0.1:8000\\/api\\/internal\\/invoices?page=1\",\"from\":null,\"last_page\":1,\"last_page_url\":\"http:\\/\\/127.0.0.1:8000\\/api\\/internal\\/invoices?page=1\",\"links\":[{\"url\":null,\"label\":\"&laquo; Sebelumnya\",\"active\":false},{\"url\":\"http:\\/\\/127.0.0.1:8000\\/api\\/internal\\/invoices?page=1\",\"label\":\"1\",\"active\":true},{\"url\":null,\"label\":\"Berikutnya &raquo;\",\"active\":false}],\"next_page_url\":null,\"path\":\"http:\\/\\/127.0.0.1:8000\\/api\\/internal\\/invoices\",\"per_page\":15,\"prev_page_url\":null,\"to\":null,\"total\":0}}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "History Scanner",
+					"item": [
+						{
+							"name": "post history scanner",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true
+								}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_qr\": \"eyJpdiI6IkpmZkJqRUVuaDRDWkNSenRTMlhJbWc9PSIsInZhbHVlIjoiQll5UXBNZWVRWWxZaUxnTVFxQU1WQT09IiwibWFjIjoiMjMzNzFkNzMxMmE0NjljOTY3NzEwZTZhYThjYzI5ZmRjZjY3Yzk5NGMwNTA0MTFjNjZiZjgxOWViNmI5ODg1NCIsInRhZyI6IiJ9\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/historyScanners",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"historyScanners"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Callback Payment",
+					"item": [
+						{
+							"name": "Proccess",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"order\": {\r\n        \"first_name\": \"First\",\r\n        \"last_name\": \"Last\",\r\n        \"email\": \"user@email.com\",\r\n        \"client_date\": \"2023-01-25T22:04:05+07:00\",\r\n        \"order_id\": \"9c3af654-e56f-4111-a31b-6b3ec231b85d\",\r\n        \"gross_amount\": 5000,\r\n        \"phone\": \"0856123123123\",\r\n        \"user_id\": \"fb985961-6d90-461b-9fe7-768e7b5828d1\",\r\n        \"item_details\": [\r\n            {\r\n                \"name\": \"Fan\",\r\n                \"price\": 5000,\r\n                \"quantity\": 1,\r\n                \"brand\": \"Miyako\",\r\n                \"category\": \"Electronic\",\r\n                \"merchant_name\": \"Store Name\"\r\n            }\r\n        ]\r\n    },\r\n    \"snapResponse\": {\r\n        \"token\": \"545e480d-1350-4829-8b5e-de745316f123\",\r\n        \"redirect_url\": \"https://app.sandbox.midtrans.com/snap/v4/redirection/545e480d-1350-4829-8b5e-de745316f123\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/payment-callback/proccess",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"payment-callback",
+										"proccess"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Success",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"transaction_time\": \"2023-11-15T18:45:13Z\",\r\n    \"transaction_status\": \"settlement\",\r\n    \"transaction_id\": \"5a657aaf-cfec-4848-9d72-edb0fc285690\", \r\n    \"status_message\": \"midtrans payment notification\", \r\n    \"status_code\": \"200\", \r\n    \"signature_key\":\"c6864c83e73f388f5ad84427f3797874195e1cecd9defd4fc19c0dac0923af1c1fa28dbef31924646cd41e914639ad8cf3404d7241b861e38a71606beb0a366f\", \r\n    \"settlement_time\": \"2023-11-15T22:45:13Z\", \r\n    \"payment_type\": \"gopay\", \r\n    \"gross_amount\": 105000, \r\n    \"order_id\": \"9c3af654-e56f-4111-a31b-6b3ec231b85d\", \r\n    \"merchant_id\": \"G972972578\",\r\n    \"fraud_status\": \"accept\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/internal/payment-callback/after-snap",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"payment-callback",
+										"after-snap"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "External",
+			"item": [
+				{
+					"name": "Booker External",
+					"item": [
+						{
+							"name": "All Booker Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/external/bookers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"bookers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Booker",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"parent_id\":\"257sh\",\r\n    \"public_link\":\"www.cek.com\",\r\n    \"description\":\"cek post creator\",\r\n\r\n    \"user\":{\r\n        \"username\":\"amm\",\r\n        \"name\":\"am\",\r\n        \"email\":\"abc@gmail.com\",\r\n        \"phone\":\"nomor WA\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/external/bookers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"bookers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Creator Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"parent_id\":\"11\",\r\n    \"public_link\":\"www.cekBooker.com\",\r\n    \"description\":\"cek update booker terbaru2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/external/bookers/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"bookers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Booker Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/external/bookers/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"bookers",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Booker Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/external/bookers/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"bookers",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Event External",
+					"item": [
+						{
+							"name": "Get All Event Data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/external/events",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Event Data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/external/events/9bfc0095-e2c6-4a6f-93f7-69f611b4fb0a",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"events",
+										"9bfc0095-e2c6-4a6f-93f7-69f611b4fb0a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"event\" : {\n    \"is_online\" : \"true\",\n    \"name\" : \"event external \",\n    \"start_date\": \"2023-01-01\",\n    \"end_date\": \"2023-01-01\"\n  },\n  \n  \"event_categories\" : [\n    {\n    \"category_id\" : \"9bfc0023-20d8-4ba4-b9a8-68e961bc78d3\"\n  }\n  ],\n\n  \"tickets\" : [\n    {\n      \"name\" : \"vip\",\n      \"price\": 20000,\n      \"qty\": 10,\n      \"type\" : \"paid\"\n    },\n    {\n      \"name\" : \"normal\",\n      \"price\": 20000,\n      \"qty\": 90,\n      \"type\" : \"free\"\n    }\n  ],\n  \"creator\" : {\n    \"public_link\": \"www.apaaka.com\"\n  },\n  \"user\" : {\n    \"email\" : \"azz@gmail.com\",\n    \"name\" : \"cek1\",\n    \"username\": \"aa11\",\n    \"password\":\"1sampai4\"\n  }\n  \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/external/events",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\" : \"hhelo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/external/events/9bd7c553-b3cf-431c-a06c-99cab0656c6c",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"events",
+										"9bd7c553-b3cf-431c-a06c-99cab0656c6c"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Order External",
+					"item": [
+						{
+							"name": "Create Order",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"tickets\" : [\n    {\n      \"ticket_id\": \"3e5ccaaf-de15-41bd-85b3-89be09a6d83c\",\n      \"participants_data\":[\n        {\n        \"email\":\"amanda@gmail.com\",\n        \"name\":\"am\"\n      },\n      {\n        \"email\":\"adinda@gmail.com\",\n        \"name\":\"dinda\"\n      }\n      ]\n    },\n    {\n      \"ticket_id\": \"961c6bd8-59fc-4cd6-806e-e5895a800a14\",\n      \"participants_data\":[{\n        \"email\":\"luluk@gmail.com\",\n        \"name\":\"luluk\"\n      }]\n    }\n  ],\n\n  \"booker_data\" : {\n    \"parent_id\":\"abc\",\n\n    \"user\":{\n        \"username\":\"luluk3\",\n        \"name\":\"luluk3\",\n        \"email\":\"luluk3@gmail.com\",\n        \"phone\":\"nomor WA\"\n    }\n    \n    }\n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/external/orders/9c28ea5c-9194-4af0-9318-c168d9a362e8",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"external",
+										"orders",
+										"9c28ea5c-9194-4af0-9318-c168d9a362e8"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://127.0.0.1:8000"
+		}
+	]
+}

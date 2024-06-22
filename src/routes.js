@@ -12,6 +12,9 @@ const chatController = require('./controllers/chatController')
 const groupChatController = require('./controllers/groupChatController')
 const messageController = require('./controllers/messageController')
 const contactController = require('./controllers/contactController')
+const login = require('./controllers/loginController')
+
+routes.post('/login', login.login)
 
 /**
  * ================
@@ -32,17 +35,20 @@ if (enableLocalCallbackExample) {
  * ================
  */
 const sessionRouter = express.Router()
+
 sessionRouter.use(middleware.apikey)
 sessionRouter.use(middleware.sessionSwagger)
 routes.use('/session', sessionRouter)
 
-sessionRouter.get('/start/:sessionId', middleware.sessionNameValidation, sessionController.startSession)
-sessionRouter.get('/status/:sessionId', middleware.sessionNameValidation, sessionController.statusSession)
-sessionRouter.get('/qr/:sessionId', middleware.sessionNameValidation, sessionController.sessionQrCode)
-sessionRouter.get('/qr/:sessionId/image', middleware.sessionNameValidation, sessionController.sessionQrCodeImage)
-sessionRouter.get('/terminate/:sessionId', middleware.sessionNameValidation, sessionController.terminateSession)
-sessionRouter.get('/terminateInactive', sessionController.terminateInactiveSessions)
-sessionRouter.get('/terminateAll', sessionController.terminateAllSessions)
+sessionRouter.get('/start/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.startSession)
+sessionRouter.get('/status/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.statusSession)
+sessionRouter.get('/qr/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.sessionQrCode)
+sessionRouter.get('/qr/:sessionId/image', middleware.verifyToken, middleware.sessionNameValidation, sessionController.sessionQrCodeImage)
+sessionRouter.get('/terminate/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.terminateSession)
+sessionRouter.get('/terminateInactive', middleware.verifyToken, sessionController.terminateInactiveSessions)
+sessionRouter.get('/terminateAll', middleware.verifyToken, sessionController.terminateAllSessions)
+
+
 
 /**
  * ================
