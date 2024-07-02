@@ -1,39 +1,46 @@
-const jwt= require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+const pool = require("../db");
+const bcrypt = require("bcrypt");
+require("dotenv").config();
 
-module.exports={
-    login: async (req,res)=>{
-        try {
-            const user = "username"
-            const pass = "password" 
+module.exports = {
+  login: async (req, res) => {
+    try {
+      const { username, password } = req.body;
 
-            if (user !== req.body.username) {
-                res.status(404).json({ msg: 'User tidak ditemukan' });
-              } 
+      const result = await pool.query(
+        "SELECT * FROM users WHERE username = $1",
+        [username]
+      );
+      const user = result.rows[0];
 
-            if (pass !== req.body.password) {
-                res.status(404).json({ msg: 'Password salah' });
-            }
+      if (!user) {
+        return res.status(404).json({ msg: "User tidak ditemukan" });
+      }
 
-            const accessToken = jwt.sign({user,pass}, process.env.ACCESS_TOKEN_SECRET,{
-                expiresIn: '10m'
-            })
+      const passwordMatch = await bcrypt.compare(password, user.password);
 
-            if (user) {
-                res.json({
-                  msg: 'success login',
-                  token: accessToken,
-                });
-              } else {
-                res.status(401).json({
-                  msg: 'username or password are incorrect',
-                });
-              }
+      if (!passwordMatch) {
+        return res.status(404).json({ msg: "Password salah" });
+      }
 
-        } catch (error) {
-            console.log(error);
-            res.status(404).json({
-                msg: error.message
-            })
+      const accessToken = jwt.sign(
+        { username, email: user.email },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+          expiresIn: "10m",
         }
+      );
+
+      res.json({
+        msg: "success login",
+        token: accessToken,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        msg: error.message,
+      });
     }
-}
+  },
+};
