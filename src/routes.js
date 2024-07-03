@@ -42,6 +42,7 @@ routes.use('/session', sessionRouter)
 
 sessionRouter.get('/start/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.startSession)
 sessionRouter.get('/status/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.statusSession)
+sessionRouter.get('/statusAllSession', middleware.verifyToken, sessionController.statusAllSession)
 sessionRouter.get('/qr/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.sessionQrCode)
 sessionRouter.get('/qr/:sessionId/image', middleware.verifyToken, middleware.sessionNameValidation, sessionController.sessionQrCodeImage)
 sessionRouter.get('/terminate/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.terminateSession)
