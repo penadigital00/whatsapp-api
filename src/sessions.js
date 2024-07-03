@@ -76,6 +76,55 @@ const restoreSessions = () => {
   }
 }
 
+const allSession = async() => {
+  try {
+    // fs.readdir(sessionFolderPath, (_, files) => {
+    //   // Iterate through the files in the parent folder
+    //   for (const file of files) {
+    //     // Use regular expression to extract the string from the folder name
+    //     const match = file.match(/^session-(.+)$/)
+    //     if (match) {
+    //       const sessionId = match[1]
+          
+    //       console.log(sessionId);
+    //       return sessionId
+    //     }
+    //   }
+    // })
+    const files = await fs.promises.readdir(sessionFolderPath)
+    // Iterate through the files in the parent folder
+     let sessionsConnected =[]
+     let sessionsNotConnected =[]
+    for (const file of files) {
+      // Use regular expression to extract the string from the folder name
+      const match = file.match(/^session-(.+)$/)
+     
+      if (match) {
+        const sessionId = match[1]
+        const validation = await validateSession(sessionId)
+        if (validation.success) {
+          sessionsConnected.push(sessionId)
+          // console.log(sessions);
+        } else if (!validation.success){
+          sessionsNotConnected.push(sessionId)
+        }
+        
+      }
+      
+      // console.log(sessions);
+    }
+    return {
+      Message : "Success get sessions",
+      Data : {        
+        "connected": sessionsConnected,
+        "not connected": sessionsNotConnected
+      }
+    }
+  } catch (error) {
+    return { success: false, message: error.message, client: null }
+  }
+}
+
 // Setup Session
 const setupSession = (sessionId) => {
   try {
@@ -388,5 +437,6 @@ module.exports = {
   restoreSessions,
   validateSession,
   deleteSession,
-  flushSessions
+  flushSessions,
+  allSession
 }

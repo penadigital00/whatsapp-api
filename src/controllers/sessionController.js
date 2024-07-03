@@ -1,6 +1,6 @@
 
 const qr = require('qr-image')
-const { setupSession, deleteSession, validateSession, flushSessions, sessions } = require('../sessions')
+const { setupSession, deleteSession, validateSession, flushSessions, sessions, allSession } = require('../sessions')
 const { sendErrorResponse, waitForNestedObject } = require('../utils')
 
 /**
@@ -88,6 +88,50 @@ const statusSession = async (req, res) => {
     }
     */
     res.json(sessionData)
+  } catch (error) {
+    console.log('statusSession ERROR', error)
+    /* #swagger.responses[500] = {
+      description: "Server Failure.",
+      content: {
+        "application/json": {
+          schema: { "$ref": "#/definitions/ErrorResponse" }
+        }
+      }
+    }
+    */
+    sendErrorResponse(res, 500, error.message)
+  }
+}
+
+const statusAllSession = async (req, res) => {
+  // #swagger.summary = 'Get session status'
+  // #swagger.description = 'Status of the session with the given session ID.'
+  try {
+    // fs.readdir(sessionFolderPath, (_, files) => {
+    //   // Iterate through the files in the parent folder
+    //   for (const file of files) {
+    //     // Use regular expression to extract the string from the folder name
+    //     const match = file.match(/^session-(.+)$/)
+    //     if (match) {
+    //       let sessionId = match[1]
+    //       console.log(sessionId);
+    //       // return sessionId
+    //     }
+    //   }
+    // })
+    const allSessionStatus = await allSession(true)
+    // console.log(allSessionStatus);
+    // const sessionData = await validateSession(sessionId)
+    /* #swagger.responses[200] = {
+      description: "Status of the session.",
+      content: {
+        "application/json": {
+          schema: { "$ref": "#/definitions/StatusSessionResponse" }
+        }
+      }
+    }
+    */
+    res.json(allSessionStatus)
   } catch (error) {
     console.log('statusSession ERROR', error)
     /* #swagger.responses[500] = {
@@ -325,5 +369,6 @@ module.exports = {
   sessionQrCodeImage,
   terminateSession,
   terminateInactiveSessions,
-  terminateAllSessions
+  terminateAllSessions,
+  statusAllSession
 }
