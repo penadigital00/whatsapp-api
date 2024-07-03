@@ -133,6 +133,14 @@ Run the test suite with the following command:
 npm run test
 ```
 
+## Running Migration or Seeder 
+
+Running the migration or seeder 
+
+```bash
+node src/migration.js
+```
+
 ## Documentation
 
 API documentation can be found in the [`swagger.json`](https://raw.githubusercontent.com/chrishubert/whatsapp-api/master/swagger.json) file. See this file directly into [Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/chrishubert/whatsapp-api/master/swagger.json) or any other OpenAPI-compatible tool to view and interact with the API documentation.

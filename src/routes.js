@@ -44,7 +44,7 @@ sessionRouter.get('/start/:sessionId', middleware.verifyToken, middleware.sessio
 sessionRouter.get('/status/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.statusSession)
 sessionRouter.get('/statusAllSession', middleware.verifyToken, sessionController.statusAllSession)
 sessionRouter.get('/qr/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.sessionQrCode)
-sessionRouter.get('/qr/:sessionId/image', middleware.verifyToken, middleware.sessionNameValidation, sessionController.sessionQrCodeImage)
+sessionRouter.get('/qr/:sessionId/image', middleware.sessionNameValidation, sessionController.sessionQrCodeImage)
 sessionRouter.get('/terminate/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.terminateSession)
 sessionRouter.get('/terminateInactive', middleware.verifyToken, sessionController.terminateInactiveSessions)
 sessionRouter.get('/terminateAll', middleware.verifyToken, sessionController.terminateAllSessions)
