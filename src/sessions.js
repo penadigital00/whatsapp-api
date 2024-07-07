@@ -92,9 +92,10 @@ const setupSession = (sessionId) => {
       puppeteer: {
         executablePath: process.env.CHROME_BIN || null,
         // headless: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
+        //args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage'] //test disabled gpu and dev-shm
+	args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
       },
-      userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
+      //userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
       authStrategy: localAuth
     }
 
