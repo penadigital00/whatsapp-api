@@ -26,7 +26,7 @@ routes.post('/login', login.login)
 routes.get('/ping', healthController.ping)
 // API basic callback
 if (enableLocalCallbackExample) {
-  routes.post('/localCallbackExample', [middleware.apikey, middleware.rateLimiter], healthController.localCallbackExample)
+  routes.post('/localCallbackExample', [middleware.apikey, middleware.rateLimiter], sessionController.callback)
 }
 
 /**

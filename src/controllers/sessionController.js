@@ -1,6 +1,6 @@
 
 const qr = require('qr-image')
-const { setupSession, deleteSession, validateSession, flushSessions, sessions, allSession } = require('../sessions')
+const { setupSession, deleteSession, validateSession, flushSessions, sessions, allSession, callback } = require('../sessions')
 const { sendErrorResponse, waitForNestedObject } = require('../utils')
 
 /**
@@ -19,7 +19,8 @@ const startSession = async (req, res) => {
   // #swagger.description = 'Starts a session for the given session ID.'
   try {
     const sessionId = req.params.sessionId
-    const setupSessionReturn = setupSession(sessionId)
+    const callbackUrl = req.query.callbackUrl
+    const setupSessionReturn = setupSession(sessionId, callbackUrl)
     if (!setupSessionReturn.success) {
       /* #swagger.responses[422] = {
         description: "Unprocessable Entity.",
@@ -370,5 +371,6 @@ module.exports = {
   terminateSession,
   terminateInactiveSessions,
   terminateAllSessions,
-  statusAllSession
+  statusAllSession,
+  callback
 }

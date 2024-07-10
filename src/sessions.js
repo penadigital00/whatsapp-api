@@ -2,8 +2,10 @@ const { Client, LocalAuth } = require('whatsapp-web.js')
 const fs = require('fs')
 const path = require('path')
 const sessions = new Map()
+const webhook_sessions = new Map()
 const { baseWebhookURL, sessionFolderPath, maxAttachmentSize, setMessagesAsSeen, webVersion, webVersionCacheType, recoverSessions } = require('./config')
 const { triggerWebhook, waitForNestedObject, checkIfEventisEnabled } = require('./utils')
+const axios = require('axios')
 
 // Function to validate if the session is ready
 const validateSession = async (sessionId) => {
@@ -125,10 +127,37 @@ const allSession = async() => {
   }
 }
 
-// Setup Session
-const setupSession = (sessionId) => {
+const callback = async (req, res) => {
   try {
+    const { sessionId, data, dataType } = req.body
+
+    console.log({dataType});
+
+    if (sessionId) {
+      const webhook_session_name = sessionId + '_webhook_url'
+      const callbackUrl = webhook_sessions.get(webhook_session_name)
+      if (callbackUrl) {
+        axios.post(callbackUrl, data)
+      }
+    }
+  } catch (error) {
+    return { success: false, message: error.message, client: null }
+  }
+}
+
+// Setup Session
+const setupSession = (sessionId, callbackUrl=null) => {
+  try {
+    const webhook_session_name = sessionId + '_webhook_url'
+    if (callbackUrl && callbackUrl !== null && callbackUrl !== undefined) {
+      webhook_sessions.set(webhook_session_name, callbackUrl)
+    } 
+
     if (sessions.has(sessionId)) {
+      if (callbackUrl) {
+        const client = sessions.get(sessionId)
+        client.authStrategy.callbackUrl = callbackUrl
+      }
       return { success: false, message: `Session already exists for: ${sessionId}`, client: sessions.get(sessionId) }
     }
 
@@ -439,5 +468,6 @@ module.exports = {
   validateSession,
   deleteSession,
   flushSessions,
-  allSession
+  allSession,
+  callback
 }
