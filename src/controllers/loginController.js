@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const pool = require("../db");
+const {pool} = require("../db");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 
@@ -25,7 +25,7 @@ module.exports = {
       }
 
       const accessToken = jwt.sign(
-        { username, email: user.email },
+        { user_id: user.id, username, email: user.email },
         process.env.ACCESS_TOKEN_SECRET,
         {
           expiresIn: "10m",

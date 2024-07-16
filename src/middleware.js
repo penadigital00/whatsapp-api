@@ -35,6 +35,7 @@ const verifyToken = (req, res, next) => {
           if (err) return res.sendStatus(403).json({
               msg: err.message
           });
+          req.user_id = decoded.user_id;
           req.username = decoded.username;
           next();
       })
