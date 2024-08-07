@@ -378,6 +378,38 @@ const terminateAllSessions = async (req, res) => {
   }
 }
 
+/**
+ * Updates the webhook URL for the given session ID.
+ *
+ * @function
+ * @async
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object.
+ * @param {string} req.params.sessionId - The session ID.
+ * @returns {Promise<void>}
+ * @throws {Error} If there was an error updating the webhook URL.
+ */
+const updateWebhookUrl = async (req, res) => {
+  try {
+    const sessionId = req.params.sessionId;
+    const { callbackUrl } = req.body;
+
+    // Update the session in the database
+    const userSession = await UserSession.findOne({ where: { name: sessionId } });
+    if (!userSession) {
+      return res.status(404).json({ success: false, message: 'Session not found' });
+    }
+
+    userSession.webhook_url = callbackUrl;
+    await userSession.save();
+
+    res.json({ success: true, message: 'Webhook URL updated successfully' });
+  } catch (error) {
+    console.log('updateWebhookUrl ERROR', error);
+    sendErrorResponse(res, 500, error.message);
+  }
+};
+
 module.exports = {
   startSession,
   statusSession,
@@ -387,5 +419,6 @@ module.exports = {
   terminateInactiveSessions,
   terminateAllSessions,
   statusAllSession,
-  callback
+  callback,
+  updateWebhookUrl
 }

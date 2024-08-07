@@ -48,6 +48,7 @@ sessionRouter.get('/qr/:sessionId/image', middleware.sessionNameValidation, sess
 sessionRouter.get('/terminate/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.terminateSession)
 sessionRouter.get('/terminateInactive', middleware.verifyToken, sessionController.terminateInactiveSessions)
 sessionRouter.get('/terminateAll', middleware.verifyToken, sessionController.terminateAllSessions)
+sessionRouter.patch('/updateWebhook/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.updateWebhookUrl);
 
 
 
