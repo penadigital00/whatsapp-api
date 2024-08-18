@@ -410,6 +410,25 @@ const updateWebhookUrl = async (req, res) => {
   }
 };
 
+const getSessionListByUserId = async (req, res) => {
+  try {
+    const userId = req.user_id; // Mengambil user_id dari token yang sudah didekode di middleware
+
+    const sessions = await UserSession.findAll({
+      where: { user_id: userId }
+    });
+
+    if (sessions.length === 0) {
+      return res.status(404).json({ success: false, message: 'No sessions found for this user' });
+    }
+
+    res.json({ success: true, sessions });
+  } catch (error) {
+    console.log('getSessionListByUserId ERROR', error);
+    sendErrorResponse(res, 500, error.message);
+  }
+};
+
 module.exports = {
   startSession,
   statusSession,
@@ -420,5 +439,6 @@ module.exports = {
   terminateAllSessions,
   statusAllSession,
   callback,
-  updateWebhookUrl
+  updateWebhookUrl,
+  getSessionListByUserId
 }

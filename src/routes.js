@@ -40,6 +40,7 @@ sessionRouter.use(middleware.apikey)
 sessionRouter.use(middleware.sessionSwagger)
 routes.use('/session', sessionRouter)
 
+sessionRouter.get('/list', middleware.verifyToken, middleware.sessionNameValidation, sessionController.getSessionListByUserId);
 sessionRouter.get('/start/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.startSession)
 sessionRouter.get('/status/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.statusSession)
 sessionRouter.get('/statusAllSession', middleware.verifyToken, sessionController.statusAllSession)
