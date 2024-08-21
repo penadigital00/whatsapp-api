@@ -6,6 +6,7 @@ const webhook_sessions = new Map()
 const { baseWebhookURL, sessionFolderPath, maxAttachmentSize, setMessagesAsSeen, webVersion, webVersionCacheType, recoverSessions } = require('./config')
 const { triggerWebhook, waitForNestedObject, checkIfEventisEnabled } = require('./utils')
 const axios = require('axios')
+const UserSession = require('./models/userSession')
 
 // Function to validate if the session is ready
 const validateSession = async (sessionId) => {
@@ -134,9 +135,14 @@ const callback = async (req, res) => {
     console.log({dataType});
 
     if (sessionId) {
-      const webhook_session_name = sessionId + '_webhook_url'
-      const callbackUrl = webhook_sessions.get(webhook_session_name)
-      if (callbackUrl) {
+      // const webhook_session_name = sessionId + '_webhook_url'
+      // search webhook_url in user_sessions where name is sessionId
+      const userSession = await UserSession.findOne({ name: sessionId });
+      const callbackUrl = userSession ? userSession.webhook_url : null;
+      // console.log({userSession, callbackUrl});
+
+      // const callbackUrl = webhook_sessions.get(webhook_session_name)
+      if (callbackUrl && dataType === 'message') {
         axios.post(callbackUrl, data)
       }
     }
