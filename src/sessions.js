@@ -132,8 +132,6 @@ const callback = async (req, res) => {
   try {
     const { sessionId, data, dataType } = req.body
 
-    console.log({dataType});
-
     if (sessionId) {
       // const webhook_session_name = sessionId + '_webhook_url'
       // search webhook_url in user_sessions where name is sessionId
@@ -432,10 +430,16 @@ const deleteSession = async (sessionId, validation) => {
       await client.destroy()
     }
 
-    // Wait for client.pupBrowser to be disconnected before deleting the folder
+    // Hapus data session dari database menggunakan Sequelize
+    await UserSession.destroy({
+      where: { name: sessionId },
+    });
+
+    // Tunggu client.pupBrowser disconnect sebelum menghapus folder
     while (client.pupBrowser.isConnected()) {
       await new Promise(resolve => setTimeout(resolve, 100))
     }
+
     await deleteSessionFolder(sessionId)
     sessions.delete(sessionId)
   } catch (error) {
@@ -445,27 +449,43 @@ const deleteSession = async (sessionId, validation) => {
 }
 
 // Function to handle session flush
-const flushSessions = async (deleteOnlyInactive) => {
+const flushSessions = async (deleteOnlyInactive, userId) => {
   try {
     // Read the contents of the sessions folder
-    const files = await fs.promises.readdir(sessionFolderPath)
+    const files = await fs.promises.readdir(sessionFolderPath);
+
     // Iterate through the files in the parent folder
     for (const file of files) {
       // Use regular expression to extract the string from the folder name
-      const match = file.match(/^session-(.+)$/)
+      const match = file.match(/^session-(.+)$/);
       if (match) {
-        const sessionId = match[1]
-        const validation = await validateSession(sessionId)
+        const sessionId = match[1];
+        const validation = await validateSession(sessionId);
+
+        // Get the user session from the database
+        const userSession = await UserSession.findOne({ where: { name: sessionId } });
+
+        // Skip session if it does not belong to the userId (if provided)
+        if (userId && userSession?.user_id !== userId) {
+          continue;
+        }
+
+        // Proceed to delete the session if not connected or if deleteOnlyInactive is false
         if (!deleteOnlyInactive || !validation.success) {
-          await deleteSession(sessionId, validation)
+          await deleteSession(sessionId, validation);
+
+          // Optionally, remove the session from the database after deletion
+          if (userSession) {
+            await userSession.destroy();
+          }
         }
       }
     }
   } catch (error) {
-    console.log(error)
-    throw error
+    console.log(error);
+    throw error;
   }
-}
+};
 
 module.exports = {
   sessions,

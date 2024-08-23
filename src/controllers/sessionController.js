@@ -312,7 +312,8 @@ const terminateInactiveSessions = async (req, res) => {
   // #swagger.summary = 'Terminate inactive sessions'
   // #swagger.description = 'Terminates all inactive sessions.'
   try {
-    await flushSessions(true)
+    const userId = req.user_id;
+    await flushSessions(true, userId);
     /* #swagger.responses[200] = {
       description: "Sessions terminated.",
       content: {
@@ -352,31 +353,33 @@ const terminateAllSessions = async (req, res) => {
   // #swagger.summary = 'Terminate all sessions'
   // #swagger.description = 'Terminates all sessions.'
   try {
-    await flushSessions(false)
-    /* #swagger.responses[200] = {
-      description: "Sessions terminated.",
-      content: {
-        "application/json": {
-          schema: { "$ref": "#/definitions/TerminateSessionsResponse" }
-        }
-      }
+    const userId = req.user_id;
+
+    const userSessions = await UserSession.findAll({
+      where: { user_id: userId },
+    });
+
+    for (const session of userSessions) {
+      await deleteSession(session.name, { success: false, message: 'session_not_connected' });
     }
-    */
-    res.json({ success: true, message: 'Flush completed successfully' })
+
+    await flushSessions(false, userId);
+
+    res.json({ success: true, message: 'All sessions terminated for the user' });
   } catch (error) {
-  /* #swagger.responses[500] = {
-      description: "Server Failure.",
-      content: {
-        "application/json": {
-          schema: { "$ref": "#/definitions/ErrorResponse" }
+    /* #swagger.responses[500] = {
+        description: "Server Failure.",
+        content: {
+          "application/json": {
+            schema: { "$ref": "#/definitions/ErrorResponse" }
+          }
         }
       }
-    }
-    */
-    console.log('terminateAllSessions ERROR', error)
-    sendErrorResponse(res, 500, error.message)
+      */
+    console.log('terminateAllSessions ERROR', error);
+    sendErrorResponse(res, 500, error.message);
   }
-}
+};
 
 /**
  * Updates the webhook URL for the given session ID.
@@ -417,10 +420,6 @@ const getSessionListByUserId = async (req, res) => {
     const sessions = await UserSession.findAll({
       where: { user_id: userId }
     });
-
-    if (sessions.length === 0) {
-      return res.status(404).json({ success: false, message: 'No sessions found for this user' });
-    }
 
     res.json({ success: true, sessions });
   } catch (error) {
