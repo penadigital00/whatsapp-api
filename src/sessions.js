@@ -132,7 +132,7 @@ const callback = async (req, res) => {
   try {
     const { sessionId, data, dataType } = req.body
 
-    if (sessionId) {
+    if (sessionId && (dataType === 'message' || dataType === 'media')) {
       // const webhook_session_name = sessionId + '_webhook_url'
       // search webhook_url in user_sessions where name is sessionId
       const userSession = await UserSession.findOne({ where: { name: sessionId } });
@@ -140,7 +140,7 @@ const callback = async (req, res) => {
       // console.log({userSession, callbackUrl});
 
       // const callbackUrl = webhook_sessions.get(webhook_session_name)
-      if (callbackUrl && (dataType === 'message' || dataType === 'media')) {
+      if (callbackUrl) {
         axios.post(callbackUrl, data)
       }
     }
