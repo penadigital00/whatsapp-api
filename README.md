@@ -40,6 +40,8 @@ cd whatsapp-api
 
 3. Run the Docker Compose:
 
+IMPORTANT : IF USING DOCKER NOT RUNNING, YOU NEED TO RUN WITH NPM START FIRST MAKE SURE DO UNTIL SCANNING AND CONNECTED
+
 ```bash
 docker-compose pull && docker-compose up
 ```
