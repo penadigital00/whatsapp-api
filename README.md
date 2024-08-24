@@ -139,6 +139,7 @@ Running the migration or seeder
 
 ```bash
 node src/migration.js
+node src/seeder.js
 ```
 
 ## Documentation

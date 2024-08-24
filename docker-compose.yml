@@ -21,8 +21,14 @@ services:
       - ENABLE_SWAGGER_ENDPOINT=TRUE # OPTIONAL, ENABLES THE /api-docs ENDPOINT
       # - RATE_LIMIT_MAX=1000 # OPTIONAL, THE MAXIUM NUMBER OF CONNECTIONS TO ALLOW PER TIME FRAME
       # - RATE_LIMIT_WINDOW_MS=1000 # OPTIONAL, TIME FRAME FOR WHICH REQUESTS ARE CHECKED IN MS
-      # - WEB_VERSION='2.2328.5' # OPTIONAL, THE VERSION OF WHATSAPP WEB TO USE
-      # - WEB_VERSION_CACHE_TYPE=none # OPTIONAL, DETERMINES WHERE TO GET THE WHATSAPP WEB VERSION(local, remote or none), DEFAULT 'none'
-      # - RECOVER_SESSIONS=TRUE # OPTIONAL, SHOULD WE RECOVER THE SESSION IN CASE OF PAGE FAILURES
+      
+      # - WEB_VERSION have expired base on this reference 
+      #   https://wppconnect.io/whatsapp-versions/ 
+      #   'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/' + webVersion + '.html'
+      #   https://github.com/wppconnect-team/wa-version/tree/main/html
+      - WEB_VERSION='2.3000.1015910634-alpha' # OPTIONAL, THE VERSION OF WHATSAPP WEB TO USE
+      - WEB_VERSION_CACHE_TYPE=remote # OPTIONAL, DETERMINES WHERE TO GET THE WHATSAPP WEB VERSION(local, remote or none), DEFAULT 'none'
+      
+      - RECOVER_SESSIONS=TRUE # OPTIONAL, SHOULD WE RECOVER THE SESSION IN CASE OF PAGE FAILURES
     volumes:
       - ./sessions:/usr/src/app/sessions # Mount the local ./sessions/ folder to the container's /usr/src/app/sessions folder
