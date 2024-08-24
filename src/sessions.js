@@ -135,12 +135,12 @@ const callback = async (req, res) => {
     if (sessionId) {
       // const webhook_session_name = sessionId + '_webhook_url'
       // search webhook_url in user_sessions where name is sessionId
-      const userSession = await UserSession.findOne({ name: sessionId });
+      const userSession = await UserSession.findOne({ where: { name: sessionId } });
       const callbackUrl = userSession ? userSession.webhook_url : null;
       // console.log({userSession, callbackUrl});
 
       // const callbackUrl = webhook_sessions.get(webhook_session_name)
-      if (callbackUrl && dataType === 'message') {
+      if (callbackUrl && (dataType === 'message' || dataType === 'media')) {
         axios.post(callbackUrl, data)
       }
     }
