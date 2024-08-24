@@ -30,6 +30,12 @@ RUN npm install --only=production
 # Copy the rest of the source code to the working directory
 COPY . .
 
+#run migration
+CMD ["node", "src/migration.js"]
+
+#run seeder
+CMD ["node", "src/seeder.js"]
+
 # Expose the port the API will run on
 EXPOSE 3000
 
