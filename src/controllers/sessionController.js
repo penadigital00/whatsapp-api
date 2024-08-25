@@ -406,6 +406,23 @@ const updateWebhookUrl = async (req, res) => {
     userSession.webhook_url = callbackUrl;
     await userSession.save();
 
+    const setupSessionReturn = setupSession(sessionId, callbackUrl);
+    if (!setupSessionReturn.success) {
+      /* #swagger.responses[422] = {
+        description: "Unprocessable Entity.",
+        content: {
+          "application/json": {
+            schema: { "$ref": "#/definitions/ErrorResponse" }
+          }
+        }
+      }
+      */
+      sendErrorResponse(res, 422, setupSessionReturn.message);
+      return;
+    }
+
+    console.log('update webhook session ' + sessionId + ' to ' + callbackUrl);
+
     res.json({ success: true, message: 'Webhook URL updated successfully' });
   } catch (error) {
     console.log('updateWebhookUrl ERROR', error);

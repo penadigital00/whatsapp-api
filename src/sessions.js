@@ -68,8 +68,10 @@ const restoreSessions = () => {
         const match = file.match(/^session-(.+)$/)
         if (match) {
           const sessionId = match[1]
-          console.log('existing session detected', sessionId)
-          setupSession(sessionId)
+          const callbackUrl = webhook_sessions.get(sessionId + '_webhook_url') || process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
+          console.log('existing session detected : ' + sessionId + ' webhook URL : ' + callbackUrl)
+
+          setupSession(sessionId, callbackUrl)
         }
       }
     })
@@ -246,10 +248,11 @@ const initializeEvents = (client, sessionId) => {
 
   if (recoverSessions) {
     waitForNestedObject(client, 'pupPage').then(() => {
-      const restartSession = async (sessionId) => {
+      const restartSession = async (sessionId, sessionWebhook) => {
         sessions.delete(sessionId)
+        webhook_sessions.delete(sessionId + '_webhook_url')
         await client.destroy().catch(e => { })
-        setupSession(sessionId)
+        setupSession(sessionId, sessionWebhook)
       }
       client.pupPage.once('close', function () {
         // emitted when the page closes
