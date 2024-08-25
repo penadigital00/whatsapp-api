@@ -68,7 +68,7 @@ const restoreSessions = () => {
         const match = file.match(/^session-(.+)$/)
         if (match) {
           const sessionId = match[1]
-          const callbackUrl = webhook_sessions.get(sessionId + '_webhook_url') || process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
+          const callbackUrl = webhook_sessions.get(sessionId + '_webhook_url')
           console.log('existing session detected : ' + sessionId + ' webhook URL : ' + callbackUrl)
 
           setupSession(sessionId, callbackUrl)
@@ -154,16 +154,16 @@ const callback = async (req, res) => {
 // Setup Session
 const setupSession = (sessionId, callbackUrl=null) => {
   try {
-    const webhook_session_name = sessionId + '_webhook_url'
-    if (callbackUrl && callbackUrl !== null && callbackUrl !== undefined) {
-      webhook_sessions.set(webhook_session_name, callbackUrl)
-    } 
+
+    // if (sessions.has(sessionId)) {
+    //   if (callbackUrl) {
+    //     const client = sessions.get(sessionId)
+    //     client.authStrategy.callbackUrl = callbackUrl
+    //   }
+    //   return { success: false, message: `Session already exists for: ${sessionId}`, client: sessions.get(sessionId) }
+    // }
 
     if (sessions.has(sessionId)) {
-      if (callbackUrl) {
-        const client = sessions.get(sessionId)
-        client.authStrategy.callbackUrl = callbackUrl
-      }
       return { success: false, message: `Session already exists for: ${sessionId}`, client: sessions.get(sessionId) }
     }
 
@@ -231,20 +231,31 @@ const setupSession = (sessionId, callbackUrl=null) => {
 
     client.initialize().catch(err => console.log('Initialize error:', err.message))
 
-    initializeEvents(client, sessionId)
+    const webhook_session_name = sessionId + '_webhook_url'
+    if (callbackUrl) {
+      webhook_sessions.set(webhook_session_name, callbackUrl)
+    }else{
+      callbackUrl = process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
+      webhook_sessions.set(webhook_session_name, callbackUrl)
+    }
+    initializeEvents(client, sessionId, callbackUrl)
 
     // Save the session to the Map
     sessions.set(sessionId, client)
+
+    console.log('Initialize session '+sessionId+' url callback : '+callbackUrl)
+
     return { success: true, message: 'Session initiated successfully', client }
   } catch (error) {
     return { success: false, message: error.message, client: null }
   }
 }
 
-const initializeEvents = (client, sessionId) => {
+const initializeEvents = (client, sessionId, callbackUrl) => {
   // check if the session webhook is overridden
   //const sessionWebhook = process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
-  const sessionWebhook =  webhook_sessions.get(sessionId + '_webhook_url') || process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
+  const sessionWebhook =  callbackUrl;
+  console.log('Initialize Event session : '+sessionId+' callbackurl '+callbackUrl);
 
   if (recoverSessions) {
     waitForNestedObject(client, 'pupPage').then(() => {
@@ -469,6 +480,7 @@ const deleteSession = async (sessionId, validation) => {
 
     await deleteSessionFolder(sessionId)
     sessions.delete(sessionId)
+    webhook_sessions.delete(sessionId + '_webhook_url')
   } catch (error) {
     console.log(error)
     throw error
