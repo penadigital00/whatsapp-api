@@ -198,7 +198,7 @@ const setupSession = (sessionId, callbackUrl=null) => {
         executablePath: process.env.CHROME_BIN || null,
         // headless: false,
         //args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage'] //test disabled gpu and dev-shm
-	args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
+	      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
       },
       //userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
       authStrategy: localAuth
@@ -241,7 +241,8 @@ const setupSession = (sessionId, callbackUrl=null) => {
 
 const initializeEvents = (client, sessionId) => {
   // check if the session webhook is overridden
-  const sessionWebhook = process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
+  //const sessionWebhook = process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
+  const sessionWebhook =  webhook_sessions.get(sessionId + '_webhook_url') || process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
 
   if (recoverSessions) {
     waitForNestedObject(client, 'pupPage').then(() => {
