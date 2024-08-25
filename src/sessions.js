@@ -61,14 +61,16 @@ const restoreSessions = () => {
       fs.mkdirSync(sessionFolderPath) // Create the session directory if it doesn't exist
     }
     // Read the contents of the folder
-    fs.readdir(sessionFolderPath, (_, files) => {
+    fs.readdir(sessionFolderPath, async (_, files) => {
       // Iterate through the files in the parent folder
       for (const file of files) {
         // Use regular expression to extract the string from the folder name
         const match = file.match(/^session-(.+)$/)
         if (match) {
           const sessionId = match[1]
-          const callbackUrl = webhook_sessions.get(sessionId + '_webhook_url')
+          const callbackUrl = webhook_sessions.get(`${sessionId}_webhook_url`) || 
+            (await UserSession.findOne({ where: { name: sessionId } }))?.webhook_url || 
+            null;
           console.log('existing session detected : ' + sessionId + ' webhook URL : ' + callbackUrl)
 
           setupSession(sessionId, callbackUrl)
@@ -164,7 +166,13 @@ const setupSession = (sessionId, callbackUrl=null) => {
     // }
 
     if (sessions.has(sessionId)) {
-      return { success: false, message: `Session already exists for: ${sessionId}`, client: sessions.get(sessionId) }
+      if (callbackUrl) {
+        const client = sessions.get(sessionId)
+        webhook_sessions.set(sessionId + '_webhook_url', callbackUrl)
+        return { success: true, message: 'Session initiated successfully', client }
+      } else {
+        return { success: false, message: `Session already exists for: ${sessionId}`, client: sessions.get(sessionId) }
+      }
     }
 
     // Disable the delete folder from the logout function (will be handled separately)
@@ -534,5 +542,6 @@ module.exports = {
   deleteSession,
   flushSessions,
   allSession,
-  callback
+  callback,
+  initializeEvents
 }

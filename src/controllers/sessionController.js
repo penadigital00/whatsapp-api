@@ -1,6 +1,6 @@
 
 const qr = require('qr-image')
-const { setupSession, deleteSession, validateSession, flushSessions, sessions, allSession, callback } = require('../sessions')
+const { setupSession, deleteSession, validateSession, flushSessions, sessions, allSession, callback, initializeEvents, restoreSessions } = require('../sessions')
 const { sendErrorResponse, waitForNestedObject } = require('../utils')
 const UserSession = require('../models/userSession')
 
@@ -420,6 +420,10 @@ const updateWebhookUrl = async (req, res) => {
       sendErrorResponse(res, 422, setupSessionReturn.message);
       return;
     }
+
+    const client = setupSessionReturn.client;
+    client.removeAllListeners();
+    initializeEvents(client, sessionId, callbackUrl)
 
     console.log('update webhook session ' + sessionId + ' to ' + callbackUrl);
 
