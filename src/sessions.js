@@ -130,9 +130,9 @@ const allSession = async() => {
 
 const callback = async (req, res) => {
   try {
-    const { sessionId, data, dataType } = req.body
+    const { sessionId, data} = req.body
 
-    if (sessionId && (dataType === 'message' || dataType === 'media')) {
+    if (sessionId) {
       // const webhook_session_name = sessionId + '_webhook_url'
       // search webhook_url in user_sessions where name is sessionId
       const userSession = await UserSession.findOne({ where: { name: sessionId } });
@@ -169,6 +169,29 @@ const setupSession = (sessionId, callbackUrl=null) => {
     const localAuth = new LocalAuth({ clientId: sessionId, dataPath: sessionFolderPath })
     delete localAuth.logout
     localAuth.logout = () => { }
+
+    // restartOnAuthFail: true,
+    // puppeteer: {
+    //   headless: true,
+    //    args: [
+    //      '--no-sandbox',
+    //      '--disable-setuid-sandbox',
+    //   //   '--disable-dev-shm-usage',
+    //   //   '--disable-accelerated-2d-canvas',
+    //   //   '--no-first-run',
+    //   //   '--no-zygote',
+    //   //   '--single-process', // <- this one doesn't works in Windows
+    //   //   '--disable-gpu'
+    //    ],
+    // },
+    // webVersionCache: {
+    //     type: 'remote',
+    //     remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`,
+    // },  
+    // authStrategy: new LocalAuth({
+    //   clientId: id,
+    // }),
+
 
     const clientOptions = {
       puppeteer: {
