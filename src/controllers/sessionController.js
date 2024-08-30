@@ -439,7 +439,8 @@ const getSessionListByUserId = async (req, res) => {
     const userId = req.user_id; // Mengambil user_id dari token yang sudah didekode di middleware
 
     const sessions = await UserSession.findAll({
-      where: { user_id: userId }
+      where: { user_id: userId },
+      order: [['created_at', 'DESC']], // Menambahkan urutan berdasarkan created_at descending
     });
 
     res.json({ success: true, sessions });
