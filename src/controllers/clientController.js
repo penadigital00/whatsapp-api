@@ -706,9 +706,56 @@ const getInviteInfo = async (req, res) => {
   */
   try {
     const { inviteCode } = req.body
+    console.log(inviteCode);
     const client = sessions.get(req.params.sessionId)
     const inviteInfo = await client.getInviteInfo(inviteCode)
     res.json({ success: true, inviteInfo })
+  } catch (error) {
+    sendErrorResponse(res, 500, error.message)
+  }
+}
+
+const joinAndGet = async (req, res) => {
+
+  const { inviteCode } = req.body
+  const client = sessions.get(req.params.sessionId)
+  let acceptInvite = null;
+
+  try {
+    acceptInvite = await client.acceptInvite(inviteCode)
+    
+  } catch (error) {
+    return sendErrorResponse(res, 500, 'cannot join group')
+  }
+
+  try {
+    const inviteInfo = await client.getInviteInfo(inviteCode)
+    const chatId = inviteInfo.id._serialized;
+    const chat = await client.getChatById(chatId)
+    
+    if (!chat.isGroup) { throw new Error('The chat is not a group') }
+
+    const participants = chat.groupMetadata.participants;
+    let ids = []
+    console.log(participants);
+    participants.forEach(participant => {
+      ids.push(participant.id._serialized);
+    });
+
+    async function collectContacts(idsArray) {
+      let contacts = [];
+
+      for (const id of idsArray) {
+        const contact = await client.getContactById(id);
+        contacts.push(contact);
+      }
+
+      return contacts;
+    }
+
+    collectContacts(ids).then(contacts => {
+      res.json({ success: true,  contacts, acceptInvite})
+    });
   } catch (error) {
     sendErrorResponse(res, 500, error.message)
   }
@@ -1289,6 +1336,7 @@ module.exports = {
   getContactById,
   getContacts,
   getInviteInfo,
+  joinAndGet,
   getLabelById,
   getLabels,
   addOrRemoveLabels,

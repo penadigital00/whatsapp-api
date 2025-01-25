@@ -4,7 +4,19 @@ const { routes } = require('./routes')
 const app = require('express')()
 const bodyParser = require('body-parser')
 const { maxAttachmentSize } = require('./config')
+const session = require('express-session');
 
+
+app.use(
+    session({
+      secret: process.env.ACCESS_TOKEN_SECRET,
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        secure: 'auto',
+      },
+    })
+  );
 // Initialize Express app
 app.disable('x-powered-by')
 app.use(bodyParser.json({ limit: maxAttachmentSize + 1000000 }))

@@ -2,8 +2,11 @@ const { Client, LocalAuth } = require('whatsapp-web.js')
 const fs = require('fs')
 const path = require('path')
 const sessions = new Map()
+const webhook_sessions = new Map()
 const { baseWebhookURL, sessionFolderPath, maxAttachmentSize, setMessagesAsSeen, webVersion, webVersionCacheType, recoverSessions } = require('./config')
 const { triggerWebhook, waitForNestedObject, checkIfEventisEnabled } = require('./utils')
+const axios = require('axios')
+const UserSession = require('./models/userSession')
 
 // Function to validate if the session is ready
 const validateSession = async (sessionId) => {
@@ -58,15 +61,19 @@ const restoreSessions = () => {
       fs.mkdirSync(sessionFolderPath) // Create the session directory if it doesn't exist
     }
     // Read the contents of the folder
-    fs.readdir(sessionFolderPath, (_, files) => {
+    fs.readdir(sessionFolderPath, async (_, files) => {
       // Iterate through the files in the parent folder
       for (const file of files) {
         // Use regular expression to extract the string from the folder name
         const match = file.match(/^session-(.+)$/)
         if (match) {
           const sessionId = match[1]
-          console.log('existing session detected', sessionId)
-          setupSession(sessionId)
+          const callbackUrl = webhook_sessions.get(`${sessionId}_webhook_url`) || 
+            (await UserSession.findOne({ where: { name: sessionId } }))?.webhook_url || 
+            null;
+          console.log('existing session detected : ' + sessionId + ' webhook URL : ' + callbackUrl)
+
+          setupSession(sessionId, callbackUrl)
         }
       }
     })
@@ -76,11 +83,96 @@ const restoreSessions = () => {
   }
 }
 
-// Setup Session
-const setupSession = (sessionId) => {
+const allSession = async() => {
   try {
+    // fs.readdir(sessionFolderPath, (_, files) => {
+    //   // Iterate through the files in the parent folder
+    //   for (const file of files) {
+    //     // Use regular expression to extract the string from the folder name
+    //     const match = file.match(/^session-(.+)$/)
+    //     if (match) {
+    //       const sessionId = match[1]
+          
+    //       console.log(sessionId);
+    //       return sessionId
+    //     }
+    //   }
+    // })
+    const files = await fs.promises.readdir(sessionFolderPath)
+    // Iterate through the files in the parent folder
+     let sessionsConnected =[]
+     let sessionsNotConnected =[]
+    for (const file of files) {
+      // Use regular expression to extract the string from the folder name
+      const match = file.match(/^session-(.+)$/)
+     
+      if (match) {
+        const sessionId = match[1]
+        const validation = await validateSession(sessionId)
+        if (validation.success) {
+          sessionsConnected.push(sessionId)
+          // console.log(sessions);
+        } else if (!validation.success){
+          sessionsNotConnected.push(sessionId)
+        }
+        
+      }
+      
+      // console.log(sessions);
+    }
+    return {
+      Message : "Success get sessions",
+      Data : {        
+        "connected": sessionsConnected,
+        "not connected": sessionsNotConnected
+      }
+    }
+  } catch (error) {
+    return { success: false, message: error.message, client: null }
+  }
+}
+
+const callback = async (req, res) => {
+  try {
+    const { sessionId, data} = req.body
+
+    if (sessionId) {
+      // const webhook_session_name = sessionId + '_webhook_url'
+      // search webhook_url in user_sessions where name is sessionId
+      const userSession = await UserSession.findOne({ where: { name: sessionId } });
+      const callbackUrl = userSession ? userSession.webhook_url : null;
+      // console.log({userSession, callbackUrl});
+
+      // const callbackUrl = webhook_sessions.get(webhook_session_name)
+      if (callbackUrl) {
+        axios.post(callbackUrl, data)
+      }
+    }
+  } catch (error) {
+    return { success: false, message: error.message, client: null }
+  }
+}
+
+// Setup Session
+const setupSession = (sessionId, callbackUrl=null) => {
+  try {
+
+    // if (sessions.has(sessionId)) {
+    //   if (callbackUrl) {
+    //     const client = sessions.get(sessionId)
+    //     client.authStrategy.callbackUrl = callbackUrl
+    //   }
+    //   return { success: false, message: `Session already exists for: ${sessionId}`, client: sessions.get(sessionId) }
+    // }
+
     if (sessions.has(sessionId)) {
-      return { success: false, message: `Session already exists for: ${sessionId}`, client: sessions.get(sessionId) }
+      if (callbackUrl) {
+        const client = sessions.get(sessionId)
+        webhook_sessions.set(sessionId + '_webhook_url', callbackUrl)
+        return { success: true, message: 'Session initiated successfully', client }
+      } else {
+        return { success: false, message: `Session already exists for: ${sessionId}`, client: sessions.get(sessionId) }
+      }
     }
 
     // Disable the delete folder from the logout function (will be handled separately)
@@ -88,13 +180,37 @@ const setupSession = (sessionId) => {
     delete localAuth.logout
     localAuth.logout = () => { }
 
+    // restartOnAuthFail: true,
+    // puppeteer: {
+    //   headless: true,
+    //    args: [
+    //      '--no-sandbox',
+    //      '--disable-setuid-sandbox',
+    //   //   '--disable-dev-shm-usage',
+    //   //   '--disable-accelerated-2d-canvas',
+    //   //   '--no-first-run',
+    //   //   '--no-zygote',
+    //   //   '--single-process', // <- this one doesn't works in Windows
+    //   //   '--disable-gpu'
+    //    ],
+    // },
+    // webVersionCache: {
+    //     type: 'remote',
+    //     remotePath: `https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/${wwebVersion}.html`,
+    // },  
+    // authStrategy: new LocalAuth({
+    //   clientId: id,
+    // }),
+
+
     const clientOptions = {
       puppeteer: {
         executablePath: process.env.CHROME_BIN || null,
         // headless: false,
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
+        //args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage'] //test disabled gpu and dev-shm
+	      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
       },
-      userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
+      //userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
       authStrategy: localAuth
     }
 
@@ -123,26 +239,39 @@ const setupSession = (sessionId) => {
 
     client.initialize().catch(err => console.log('Initialize error:', err.message))
 
-    initializeEvents(client, sessionId)
+    const webhook_session_name = sessionId + '_webhook_url'
+    if (callbackUrl) {
+      webhook_sessions.set(webhook_session_name, callbackUrl)
+    }else{
+      callbackUrl = process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
+      webhook_sessions.set(webhook_session_name, callbackUrl)
+    }
+    initializeEvents(client, sessionId, callbackUrl)
 
     // Save the session to the Map
     sessions.set(sessionId, client)
+
+    console.log('Initialize session '+sessionId+' url callback : '+callbackUrl)
+
     return { success: true, message: 'Session initiated successfully', client }
   } catch (error) {
     return { success: false, message: error.message, client: null }
   }
 }
 
-const initializeEvents = (client, sessionId) => {
+const initializeEvents = (client, sessionId, callbackUrl) => {
   // check if the session webhook is overridden
-  const sessionWebhook = process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
+  //const sessionWebhook = process.env[sessionId.toUpperCase() + '_WEBHOOK_URL'] || baseWebhookURL
+  const sessionWebhook =  callbackUrl;
+  console.log('Initialize Event session : '+sessionId+' callbackurl '+callbackUrl);
 
   if (recoverSessions) {
     waitForNestedObject(client, 'pupPage').then(() => {
-      const restartSession = async (sessionId) => {
+      const restartSession = async (sessionId, sessionWebhook) => {
         sessions.delete(sessionId)
+        webhook_sessions.delete(sessionId + '_webhook_url')
         await client.destroy().catch(e => { })
-        setupSession(sessionId)
+        setupSession(sessionId, sessionWebhook)
       }
       client.pupPage.once('close', function () {
         // emitted when the page closes
@@ -347,12 +476,19 @@ const deleteSession = async (sessionId, validation) => {
       await client.destroy()
     }
 
-    // Wait for client.pupBrowser to be disconnected before deleting the folder
+    // Hapus data session dari database menggunakan Sequelize
+    await UserSession.destroy({
+      where: { name: sessionId },
+    });
+
+    // Tunggu client.pupBrowser disconnect sebelum menghapus folder
     while (client.pupBrowser.isConnected()) {
       await new Promise(resolve => setTimeout(resolve, 100))
     }
+
     await deleteSessionFolder(sessionId)
     sessions.delete(sessionId)
+    webhook_sessions.delete(sessionId + '_webhook_url')
   } catch (error) {
     console.log(error)
     throw error
@@ -360,27 +496,43 @@ const deleteSession = async (sessionId, validation) => {
 }
 
 // Function to handle session flush
-const flushSessions = async (deleteOnlyInactive) => {
+const flushSessions = async (deleteOnlyInactive, userId) => {
   try {
     // Read the contents of the sessions folder
-    const files = await fs.promises.readdir(sessionFolderPath)
+    const files = await fs.promises.readdir(sessionFolderPath);
+
     // Iterate through the files in the parent folder
     for (const file of files) {
       // Use regular expression to extract the string from the folder name
-      const match = file.match(/^session-(.+)$/)
+      const match = file.match(/^session-(.+)$/);
       if (match) {
-        const sessionId = match[1]
-        const validation = await validateSession(sessionId)
+        const sessionId = match[1];
+        const validation = await validateSession(sessionId);
+
+        // Get the user session from the database
+        const userSession = await UserSession.findOne({ where: { name: sessionId } });
+
+        // Skip session if it does not belong to the userId (if provided)
+        if (userId && userSession?.user_id !== userId) {
+          continue;
+        }
+
+        // Proceed to delete the session if not connected or if deleteOnlyInactive is false
         if (!deleteOnlyInactive || !validation.success) {
-          await deleteSession(sessionId, validation)
+          await deleteSession(sessionId, validation);
+
+          // Optionally, remove the session from the database after deletion
+          if (userSession) {
+            await userSession.destroy();
+          }
         }
       }
     }
   } catch (error) {
-    console.log(error)
-    throw error
+    console.log(error);
+    throw error;
   }
-}
+};
 
 module.exports = {
   sessions,
@@ -388,5 +540,8 @@ module.exports = {
   restoreSessions,
   validateSession,
   deleteSession,
-  flushSessions
+  flushSessions,
+  allSession,
+  callback,
+  initializeEvents
 }

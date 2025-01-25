@@ -40,6 +40,8 @@ cd whatsapp-api
 
 3. Run the Docker Compose:
 
+IMPORTANT : IF USING DOCKER NOT RUNNING, YOU NEED TO RUN WITH NPM START FIRST MAKE SURE DO UNTIL SCANNING AND CONNECTED
+
 ```bash
 docker-compose pull && docker-compose up
 ```
@@ -133,6 +135,15 @@ Run the test suite with the following command:
 npm run test
 ```
 
+## Running Migration or Seeder 
+
+Running the migration or seeder 
+
+```bash
+node src/migration.js
+node src/seeder.js
+```
+
 ## Documentation
 
 API documentation can be found in the [`swagger.json`](https://raw.githubusercontent.com/chrishubert/whatsapp-api/master/swagger.json) file. See this file directly into [Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/chrishubert/whatsapp-api/master/swagger.json) or any other OpenAPI-compatible tool to view and interact with the API documentation.
@@ -153,6 +164,17 @@ By setting the `DISABLED_CALLBACKS` environment variable you can specify what ev
 In order to validate a new WhatsApp Web instance you need to scan the QR code using your mobile phone. Official documentation can be found at (https://faq.whatsapp.com/1079327266110265/?cms_platform=android) page. The service itself delivers the QR code content as a webhook event or you can use the REST endpoints (`/session/qr/:sessionId` or `/session/qr/:sessionId/image` to get the QR code as a png image). 
 
 ## Deploy to Production
+
+### Install Library Puppeteer
+https://pptr.dev/troubleshooting/#running-puppeteer-on-gitlabci
+- apt-get update
+- apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2
+libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgbm1 libgcc1 libgconf-2-4
+libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0
+libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1
+libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1
+libxss1 libxtst6 ca-certificates fonts-liberation libnss3 lsb-release
+xdg-utils wget
 
 - Load the docker image in docker-compose, or your Kubernetes environment
 - Disable the `ENABLE_LOCAL_CALLBACK_EXAMPLE` environment variable

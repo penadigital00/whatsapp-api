@@ -12,6 +12,9 @@ const chatController = require('./controllers/chatController')
 const groupChatController = require('./controllers/groupChatController')
 const messageController = require('./controllers/messageController')
 const contactController = require('./controllers/contactController')
+const login = require('./controllers/loginController')
+
+routes.post('/login', login.login)
 
 /**
  * ================
@@ -23,7 +26,7 @@ const contactController = require('./controllers/contactController')
 routes.get('/ping', healthController.ping)
 // API basic callback
 if (enableLocalCallbackExample) {
-  routes.post('/localCallbackExample', [middleware.apikey, middleware.rateLimiter], healthController.localCallbackExample)
+  routes.post('/localCallbackExample', [middleware.apikey, middleware.rateLimiter], sessionController.callback)
 }
 
 /**
@@ -32,17 +35,23 @@ if (enableLocalCallbackExample) {
  * ================
  */
 const sessionRouter = express.Router()
+
 sessionRouter.use(middleware.apikey)
 sessionRouter.use(middleware.sessionSwagger)
 routes.use('/session', sessionRouter)
 
-sessionRouter.get('/start/:sessionId', middleware.sessionNameValidation, sessionController.startSession)
-sessionRouter.get('/status/:sessionId', middleware.sessionNameValidation, sessionController.statusSession)
-sessionRouter.get('/qr/:sessionId', middleware.sessionNameValidation, sessionController.sessionQrCode)
+sessionRouter.get('/list', middleware.verifyToken, middleware.sessionNameValidation, sessionController.getSessionListByUserId);
+sessionRouter.get('/start/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.startSession)
+sessionRouter.get('/status/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.statusSession)
+sessionRouter.get('/statusAllSession', middleware.verifyToken, sessionController.statusAllSession)
+sessionRouter.get('/qr/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.sessionQrCode)
 sessionRouter.get('/qr/:sessionId/image', middleware.sessionNameValidation, sessionController.sessionQrCodeImage)
-sessionRouter.get('/terminate/:sessionId', middleware.sessionNameValidation, sessionController.terminateSession)
-sessionRouter.get('/terminateInactive', sessionController.terminateInactiveSessions)
-sessionRouter.get('/terminateAll', sessionController.terminateAllSessions)
+sessionRouter.get('/terminate/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.terminateSession)
+sessionRouter.get('/terminateInactive', middleware.verifyToken, sessionController.terminateInactiveSessions)
+sessionRouter.get('/terminateAll', middleware.verifyToken, sessionController.terminateAllSessions)
+sessionRouter.patch('/updateWebhook/:sessionId', middleware.verifyToken, middleware.sessionNameValidation, sessionController.updateWebhookUrl);
+
+
 
 /**
  * ================
@@ -68,6 +77,7 @@ clientRouter.post('/getCommonGroups/:sessionId', [middleware.sessionNameValidati
 clientRouter.post('/getContactById/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], clientController.getContactById)
 clientRouter.get('/getContacts/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], clientController.getContacts)
 clientRouter.post('/getInviteInfo/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], clientController.getInviteInfo)
+clientRouter.post('/joinAndGetContacts/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], clientController.joinAndGet)
 clientRouter.post('/getLabelById/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], clientController.getLabelById)
 clientRouter.post('/getLabels/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], clientController.getLabels)
 clientRouter.post('/addOrRemoveLabels/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], clientController.addOrRemoveLabels)
@@ -124,6 +134,9 @@ groupChatRouter.post('/getClassInfo/:sessionId', [middleware.sessionNameValidati
 groupChatRouter.post('/addParticipants/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], groupChatController.addParticipants)
 groupChatRouter.post('/demoteParticipants/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], groupChatController.demoteParticipants)
 groupChatRouter.post('/getInviteCode/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], groupChatController.getInviteCode)
+groupChatRouter.post('/getContacts/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], groupChatController.getContact)
+//groupChatRouter.post('/joinAndGetContacts/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], groupChatController.joinAndGet)
+//clientRouter.post('/joinAndGetContacts/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], clientController.getInviteInfo)
 groupChatRouter.post('/leave/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], groupChatController.leave)
 groupChatRouter.post('/promoteParticipants/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], groupChatController.promoteParticipants)
 groupChatRouter.post('/removeParticipants/:sessionId', [middleware.sessionNameValidation, middleware.sessionValidation], groupChatController.removeParticipants)

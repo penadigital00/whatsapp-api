@@ -14,13 +14,18 @@ RUN set -x \
     && apk add --no-cache \
     udev \
     ttf-freefont \
-    chromium
+    chromium \
+    git
+
+COPY .env ./
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
 # Install the dependencies
-RUN npm ci --only=production --ignore-scripts
+#RUN npm ci --only=production --ignore-scripts
+#RUN npm install
+RUN npm install --only=production
 
 # Copy the rest of the source code to the working directory
 COPY . .
@@ -29,4 +34,4 @@ COPY . .
 EXPOSE 3000
 
 # Start the API
-CMD ["npm", "start"]
+CMD ["npm", "start", "run"]

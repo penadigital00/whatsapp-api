@@ -1,7 +1,8 @@
 
 const qr = require('qr-image')
-const { setupSession, deleteSession, validateSession, flushSessions, sessions } = require('../sessions')
+const { setupSession, deleteSession, validateSession, flushSessions, sessions, allSession, callback, initializeEvents, restoreSessions } = require('../sessions')
 const { sendErrorResponse, waitForNestedObject } = require('../utils')
+const UserSession = require('../models/userSession')
 
 /**
  * Starts a session for the given session ID.
@@ -18,8 +19,12 @@ const startSession = async (req, res) => {
   // #swagger.summary = 'Start new session'
   // #swagger.description = 'Starts a session for the given session ID.'
   try {
-    const sessionId = req.params.sessionId
-    const setupSessionReturn = setupSession(sessionId)
+    const sessionId = req.params.sessionId;
+    const callbackUrl = req.query.callbackUrl;
+    const userId = req.user_id;
+    const sessionName = sessionId;
+
+    const setupSessionReturn = setupSession(sessionId, callbackUrl);
     if (!setupSessionReturn.success) {
       /* #swagger.responses[422] = {
         description: "Unprocessable Entity.",
@@ -30,9 +35,17 @@ const startSession = async (req, res) => {
         }
       }
       */
-      sendErrorResponse(res, 422, setupSessionReturn.message)
-      return
+      sendErrorResponse(res, 422, setupSessionReturn.message);
+      return;
     }
+
+    // Save session to database
+    const userSession = await UserSession.create({
+      name: sessionName,
+      user_id: userId,
+      webhook_url: callbackUrl
+    });
+
     /* #swagger.responses[200] = {
       description: "Status of the initiated session.",
       content: {
@@ -44,22 +57,25 @@ const startSession = async (req, res) => {
     */
     // wait until the client is created
     waitForNestedObject(setupSessionReturn.client, 'pupPage')
-      .then(res.json({ success: true, message: setupSessionReturn.message }))
-      .catch((err) => { sendErrorResponse(res, 500, err.message) })
+      .then(() => res.json({ success: true, message: setupSessionReturn.message, session: userSession }))
+      .catch((err) => {
+        sendErrorResponse(res, 500, err.message);
+      });
   } catch (error) {
-  /* #swagger.responses[500] = {
-      description: "Server Failure.",
-      content: {
-        "application/json": {
-          schema: { "$ref": "#/definitions/ErrorResponse" }
+    /* #swagger.responses[500] = {
+        description: "Server Failure.",
+        content: {
+          "application/json": {
+            schema: { "$ref": "#/definitions/ErrorResponse" }
+          }
         }
       }
-    }
-    */
-    console.log('startSession ERROR', error)
-    sendErrorResponse(res, 500, error.message)
+      */
+    console.log('startSession ERROR', error);
+    sendErrorResponse(res, 500, error.message);
   }
-}
+};
+
 
 /**
  * Status of the session with the given session ID.
@@ -88,6 +104,50 @@ const statusSession = async (req, res) => {
     }
     */
     res.json(sessionData)
+  } catch (error) {
+    console.log('statusSession ERROR', error)
+    /* #swagger.responses[500] = {
+      description: "Server Failure.",
+      content: {
+        "application/json": {
+          schema: { "$ref": "#/definitions/ErrorResponse" }
+        }
+      }
+    }
+    */
+    sendErrorResponse(res, 500, error.message)
+  }
+}
+
+const statusAllSession = async (req, res) => {
+  // #swagger.summary = 'Get session status'
+  // #swagger.description = 'Status of the session with the given session ID.'
+  try {
+    // fs.readdir(sessionFolderPath, (_, files) => {
+    //   // Iterate through the files in the parent folder
+    //   for (const file of files) {
+    //     // Use regular expression to extract the string from the folder name
+    //     const match = file.match(/^session-(.+)$/)
+    //     if (match) {
+    //       let sessionId = match[1]
+    //       console.log(sessionId);
+    //       // return sessionId
+    //     }
+    //   }
+    // })
+    const allSessionStatus = await allSession(true)
+    // console.log(allSessionStatus);
+    // const sessionData = await validateSession(sessionId)
+    /* #swagger.responses[200] = {
+      description: "Status of the session.",
+      content: {
+        "application/json": {
+          schema: { "$ref": "#/definitions/StatusSessionResponse" }
+        }
+      }
+    }
+    */
+    res.json(allSessionStatus)
   } catch (error) {
     console.log('statusSession ERROR', error)
     /* #swagger.responses[500] = {
@@ -252,7 +312,8 @@ const terminateInactiveSessions = async (req, res) => {
   // #swagger.summary = 'Terminate inactive sessions'
   // #swagger.description = 'Terminates all inactive sessions.'
   try {
-    await flushSessions(true)
+    const userId = req.user_id;
+    await flushSessions(true, userId);
     /* #swagger.responses[200] = {
       description: "Sessions terminated.",
       content: {
@@ -292,31 +353,102 @@ const terminateAllSessions = async (req, res) => {
   // #swagger.summary = 'Terminate all sessions'
   // #swagger.description = 'Terminates all sessions.'
   try {
-    await flushSessions(false)
-    /* #swagger.responses[200] = {
-      description: "Sessions terminated.",
-      content: {
-        "application/json": {
-          schema: { "$ref": "#/definitions/TerminateSessionsResponse" }
-        }
-      }
+    const userId = req.user_id;
+
+    const userSessions = await UserSession.findAll({
+      where: { user_id: userId },
+    });
+
+    for (const session of userSessions) {
+      await deleteSession(session.name, { success: false, message: 'session_not_connected' });
     }
-    */
-    res.json({ success: true, message: 'Flush completed successfully' })
+
+    await flushSessions(false, userId);
+
+    res.json({ success: true, message: 'All sessions terminated for the user' });
   } catch (error) {
-  /* #swagger.responses[500] = {
-      description: "Server Failure.",
-      content: {
-        "application/json": {
-          schema: { "$ref": "#/definitions/ErrorResponse" }
+    /* #swagger.responses[500] = {
+        description: "Server Failure.",
+        content: {
+          "application/json": {
+            schema: { "$ref": "#/definitions/ErrorResponse" }
+          }
         }
       }
-    }
-    */
-    console.log('terminateAllSessions ERROR', error)
-    sendErrorResponse(res, 500, error.message)
+      */
+    console.log('terminateAllSessions ERROR', error);
+    sendErrorResponse(res, 500, error.message);
   }
-}
+};
+
+/**
+ * Updates the webhook URL for the given session ID.
+ *
+ * @function
+ * @async
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object.
+ * @param {string} req.params.sessionId - The session ID.
+ * @returns {Promise<void>}
+ * @throws {Error} If there was an error updating the webhook URL.
+ */
+const updateWebhookUrl = async (req, res) => {
+  try {
+    const sessionId = req.params.sessionId;
+    const { callbackUrl } = req.body;
+
+    // Update the session in the database
+    const userSession = await UserSession.findOne({ where: { name: sessionId } });
+    if (!userSession) {
+      return res.status(404).json({ success: false, message: 'Session not found' });
+    }
+
+    userSession.webhook_url = callbackUrl;
+    await userSession.save();
+
+    const setupSessionReturn = setupSession(sessionId, callbackUrl);
+    if (!setupSessionReturn.success) {
+      /* #swagger.responses[422] = {
+        description: "Unprocessable Entity.",
+        content: {
+          "application/json": {
+            schema: { "$ref": "#/definitions/ErrorResponse" }
+          }
+        }
+      }
+      */
+      sendErrorResponse(res, 422, setupSessionReturn.message);
+      return;
+    }
+
+    const client = setupSessionReturn.client;
+    client.removeAllListeners();
+    initializeEvents(client, sessionId, callbackUrl)
+
+    console.log('update webhook session ' + sessionId + ' to ' + callbackUrl);
+
+    res.json({ success: true, message: 'Webhook URL updated successfully' });
+  } catch (error) {
+    console.log('updateWebhookUrl ERROR', error);
+    sendErrorResponse(res, 500, error.message);
+  }
+};
+
+const getSessionListByUserId = async (req, res) => {
+  try {
+    const userId = req.user_id; // Mengambil user_id dari token yang sudah didekode di middleware
+
+    const sessions = await UserSession.findAll({
+      where: { user_id: userId },
+      order: [['created_at', 'DESC']], // Menambahkan urutan berdasarkan created_at descending
+    });
+
+    res.json({ success: true, sessions });
+  } catch (error) {
+    console.log('getSessionListByUserId ERROR', error);
+    sendErrorResponse(res, 500, error.message);
+  }
+};
 
 module.exports = {
   startSession,
@@ -325,5 +457,9 @@ module.exports = {
   sessionQrCodeImage,
   terminateSession,
   terminateInactiveSessions,
-  terminateAllSessions
+  terminateAllSessions,
+  statusAllSession,
+  callback,
+  updateWebhookUrl,
+  getSessionListByUserId
 }
