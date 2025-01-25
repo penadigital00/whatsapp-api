@@ -24,7 +24,7 @@
     "qrcode-terminal": "^0.12.0",
     "sequelize": "^6.37.3",
     "swagger-ui-express": "^4.6.3",
-    "whatsapp-web.js": "pedroslopez/whatsapp-web.js#webpack-exodus"
+    "whatsapp-web.js": "git+https://github.com/pedroslopez/whatsapp-web.js.git#v1.26.1-alpha.3"
   },
   "devDependencies": {
     "eslint": "^8.38.0",
